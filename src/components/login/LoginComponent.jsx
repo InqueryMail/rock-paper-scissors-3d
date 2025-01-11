@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 
-function App() {
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL; // 5000
+
+export default function LoginComponent() {
   const [walletAddress, setWalletAddress] = useState(null);
   const [userInfo, setUserInfo] = useState("");
   const [walletStatus, setWalletStatus] = useState("");
@@ -81,7 +83,7 @@ function App() {
   const sendWalletAddress = async (address, username) => {
     // Use the parameter 'username'
     try {
-      const response = await fetch("http://localhost:5000/login", {
+      const response = await fetch(`${BACKEND_URL}/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ walletAddress: address, username }), // Send 'username'
@@ -143,108 +145,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
-
-// import React, { useState, useEffect } from "react";
-
-// function Login() {
-//   const [walletAddress, setWalletAddress] = useState(null);
-//   const [username, setUsername] = useState("");
-//   const [errorStatus, setErrorStatus] = useState("");
-//   const [userInfo, setUserInfo] = useState("");
-//   const [optionsVisible, setOptionsVisible] = useState(false);
-
-//   useEffect(() => {
-//     // Initial setup or cleanup if needed
-//   }, []);
-
-//   async function checkMetamaskInstalled() {
-//     if (typeof window.ethereum !== "undefined") {
-//       try {
-//         const accounts = await ethereum.request({
-//           method: "eth_requestAccounts",
-//         });
-//         setWalletAddress(accounts[0]);
-
-//         let currentUsername = username;
-//         if (!currentUsername) {
-//           currentUsername = prompt("Please enter your username:");
-//           if (currentUsername) {
-//             setUsername(currentUsername);
-//           }
-//         }
-
-//         localStorage.setItem("walletAddress", accounts[0]);
-
-//         const response = await sendWalletAddress(accounts[0], currentUsername);
-
-//         if (response.newUser) {
-//           setUserInfo(`Welcome, ${response.username || currentUsername}!`);
-//         } else {
-//           setUserInfo(`Welcome back, ${response.username}!`);
-//         }
-
-//         setOptionsVisible(true);
-//       } catch (error) {
-//         console.error("MetaMask connection error:", error);
-//         setErrorStatus("Failed to connect to MetaMask. Please try again.");
-//       }
-//     } else {
-//       setErrorStatus(
-//         "MetaMask is not installed. Please install it and try again."
-//       );
-//     }
-//   }
-
-//   async function sendWalletAddress(address, username) {
-//     try {
-//       const response = await fetch("http://localhost:5000/login", {
-//         method: "POST",
-//         headers: { "Content-Type": "application/json" },
-//         body: JSON.stringify({ walletAddress: address, username }),
-//       });
-
-//       if (!response.ok) {
-//         const errorData = await response.json();
-//         throw new Error(
-//           errorData.error || "Failed to log in with wallet address."
-//         );
-//       }
-//       return await response.json();
-//     } catch (error) {
-//       console.error("Error sending wallet address:", error);
-//       setErrorStatus("Failed to save wallet address. Please try again.");
-//     }
-//   }
-
-//   function navigate(route) {
-//     window.location.href = route;
-//   }
-
-//   return (
-//     <div className="login-container">
-//       <h1 className="title">Welcome to Game Dashboard</h1>
-//       <div className="metamask-status">
-//         <button className="connect-btn" onClick={checkMetamaskInstalled}>
-//           Connect with MetaMask
-//         </button>
-//         <p className="user-info">{userInfo}</p>
-//         <p className="wallet-status">Wallet: {walletAddress}</p>
-//         {errorStatus && <p className="error-status">{errorStatus}</p>}
-//       </div>
-//       {optionsVisible && (
-//         <div className="options-container">
-//           <button className="nav-btn" onClick={() => navigate("/rps")}>
-//             Rock Paper Scessors
-//           </button>
-//           <button className="nav-btn" onClick={() => navigate("/check")}>
-//             Tic Tac Toe
-//           </button>
-//         </div>
-//       )}
-//     </div>
-//   );
-// }
-
-// export default Login;

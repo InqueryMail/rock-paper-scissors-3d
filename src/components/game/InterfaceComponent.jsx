@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import useGame from "./stores/useGame.js";
+import useGame from "../../stores/useGame.js";
 
-export default function Interface() {
+export default function InterfaceComponent() {
   const {
     mode,
     setMode,
@@ -121,8 +121,7 @@ export default function Interface() {
                 Clear Data
               </div>
             </div>
-            <div className="modal-about-area">
-            </div>
+            <div className="modal-about-area"></div>
           </div>
         </div>
       )}

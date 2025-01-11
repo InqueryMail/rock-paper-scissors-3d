@@ -1,14 +1,15 @@
 import { useState, useRef, useEffect } from "react";
 import { Canvas } from "@react-three/fiber";
 import { Image, OrbitControls, Text, Float } from "@react-three/drei";
-import { Rock } from "./3d Assets/Rock.jsx";
-import { Paper } from "./3d Assets/Paper";
-import { Scissors } from "./3d Assets/Scissors";
-import useGame from "./stores/useGame.js";
+import { Rock } from "../../3d Assets/Rock.jsx";
+import { Paper } from "../../3d Assets/Paper.jsx";
+import { Scissors } from "../../3d Assets/Scissors.jsx";
+import useGame from "../../stores/useGame.js";
 
-export default function Game() {
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL; // 5000
+
+export default function GameComponent() {
   const options = ["rock", "paper", "scissors"];
-
   const {
     // Choices and winner
     player,
@@ -115,26 +116,25 @@ export default function Game() {
           winner,
           playerScore,
           computerScore,
-          walletAddress
+          walletAddress,
         };
 
-        fetch("http://localhost:5000/store-game-data", {
+        fetch(`${BACKEND_URL}/store-game-data`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(gameData),
         })
-        .then(response => response.json())
-        .then(data => {
-          console.log("Data stored successfully:", data);
-        })
-        .catch(error => {
-          console.error("Error storing data:", error);
-        });
+          .then((response) => response.json())
+          .then((data) => {
+            console.log("Data stored successfully:", data);
+          })
+          .catch((error) => {
+            console.error("Error storing data:", error);
+          });
       }
     }
-  
   }, [round, playerScore, computerScore, winner, mode, phase]);
 
   /**
