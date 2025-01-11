@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mint NFTs</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .artwork-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px;
+        }
+
+        .artwork {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            text-align: center;
+            width: 200px;
+        }
+
+        .artwork img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+
+        .artwork h3 {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        .artwork p {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .mint-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .mint-btn:hover {
+            background-color: #0056b3;
+        }
+
+        #walletAddress, #mintStatus {
+            text-align: center;
+            margin: 10px 0;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Mint NFTs</h1>
+    <div id="walletAddress">Wallet Address: {{ wallet_address }}</div>
+    <div id="mintStatus"></div>
+    <div class="artwork-container">
+        {% for artwork in artworks %}
+            <div class="artwork">
+                <img src="https://ipfs.io/ipfs/{{ artwork.ipfsHash }}" alt="{{ artwork.name }}">
+                <h3>{{ artwork.name }}</h3>
+                <p>{{ artwork.description }}</p>
+                <button class="mint-btn" onclick="confirmMintNFT('{{ artwork.ipfsHash }}', '{{ artwork.name }}', '{{ artwork.description }}')">Mint</button>
+            </div>
+        {% endfor %}
+    </div>
+    <script>
+        async function confirmMintNFT(ipfsHash, name, description) {
+            // Ask for confirmation before proceeding with minting
+            const confirmMint = window.confirm("Are you sure you want to mint this NFT?");
+            if (!confirmMint) {
+                return; // Stop the minting process if the user cancels
+            }
+
+            // If confirmed, proceed with minting
+            mintNFT(ipfsHash, name, description);
+        }
+
+        async function mintNFT(ipfsHash, name, description) {
+            // Get the wallet address dynamically
+            const walletAddress = document.getElementById("walletAddress").textContent.split(": ")[1];
+            if (!walletAddress) {
+                alert("Owner address is missing.");
+                return;
+            }
+
+            const payload = { ipfsHash, name, description, ownerAddress: walletAddress };
+
+            try {
+                const response = await fetch("/mint-nft", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(payload),
+                });
+
+                const result = await response.json();
+                const mintStatusElement = document.getElementById("mintStatus");
+                if (response.ok) {
+                    mintStatusElement.textContent = result.message;
+                } else {
+                    mintStatusElement.textContent = result.error;
+                }
+            } catch (error) {
+                console.error("Error minting NFT:", error);
+                document.getElementById("mintStatus").textContent = "Error minting NFT.";
+            }
+        }
+    </script>
+</body>
+</html>

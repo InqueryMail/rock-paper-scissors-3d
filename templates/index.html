@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/ethers/dist/ethers.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100vh;
+        }
+        h1 { color: #333; }
+        p { font-size: 16px; margin: 10px 0; }
+        button {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+        .connect-btn { background-color: #ffc107; color: black; }
+        .connect-btn:hover { background-color: #e0a800; }
+        .nav-btn { background-color: #007bff; color: white; }
+        .nav-btn:hover { background-color: #0056b3; }
+        .error { color: red; margin-top: 10px; }
+        #options { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Welcome to Game Dashboard</h1>
+    <div id="metamaskStatus">
+        <button class="connect-btn" id="connectMetamask">Connect with MetaMask</button>
+        <p id="userInfo"></p>
+        <p id="walletStatus"></p>
+        <p class="error" id="errorStatus"></p>
+    </div>
+    <div id="options" style="display: none;">
+        <button class="nav-btn" onclick="navigate('/mint')">Get Dragon</button>
+        <button class="nav-btn" onclick="navigate('/check')">View Dragon</button>
+    </div>
+    <script>
+        let walletAddress = null;
+
+        async function connectMetamask() {
+            const errorStatus = document.getElementById("errorStatus");
+            const userInfo = document.getElementById("userInfo");
+            errorStatus.textContent = "";
+            userInfo.textContent = "";
+
+            if (typeof window.ethereum !== "undefined") {
+                try {
+                    const accounts = await ethereum.request({ method: "eth_requestAccounts" });
+                    walletAddress = accounts[0];
+
+                    // Send wallet address to the backend
+                    const response = await sendWalletAddress(walletAddress);
+
+                    if (response.newUser) {
+                        const username = prompt("Welcome! Please enter your username:");
+                        if (username) {
+                            const updatedResponse = await sendWalletAddress(walletAddress, username);
+                            userInfo.textContent = `Welcome, ${updatedResponse.username}!`;
+                        }
+                    } else {
+                        userInfo.textContent = `Welcome back, ${response.username}!`;
+                    }
+
+                    document.getElementById("walletStatus").textContent = `Wallet: ${walletAddress}`;
+                    document.getElementById("connectMetamask").style.display = "none";
+                    document.getElementById("options").style.display = "block";
+                } catch (error) {
+                    console.error("MetaMask connection error:", error);
+                    errorStatus.textContent = "Failed to connect to MetaMask. Please try again.";
+                }
+            } else {
+                errorStatus.textContent = "MetaMask is not installed. Please install it and try again.";
+            }
+        }
+
+        async function sendWalletAddress(address, username = null) {
+            const errorStatus = document.getElementById("errorStatus");
+            try {
+                const response = await fetch("/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ walletAddress: address, username })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || "Failed to log in with wallet address.");
+                }
+
+                return await response.json();
+            } catch (error) {
+                console.error("Error sending wallet address:", error);
+                errorStatus.textContent = "Failed to save wallet address. Please try again.";
+            }
+        }
+
+        function navigate(route) {
+            window.location.href = route;
+        }
+
+        document.getElementById("connectMetamask").addEventListener("click", connectMetamask);
+    </script>
+</body>
+</html>
