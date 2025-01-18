@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Admin, Game, GameData, Login } from "./pages";
 import notFoundImage from "../public/assets/404.png";
+import BurnNFT from "./nft/BurnNFT";
 
 const App = () => {
   return (
@@ -12,6 +13,7 @@ const App = () => {
         <Route path="/admin" element={<Admin />} />
         <Route path="/game-data/:walletAddress" element={<GameData />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/burn" element={<BurnNFT />} />
       </Routes>
     </Router>
   );

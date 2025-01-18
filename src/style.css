@@ -22,7 +22,9 @@
   user-select: none;
   -webkit-user-drag: none;
   -moz-user-drag: none;
-  font-family: "Nickname";
+  /* font-family: "Nickname"; */
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   box-sizing: border-box;
   color: var(--black);
   -webkit-tap-highlight-color: transparent; /* for removing the highlight on Android */

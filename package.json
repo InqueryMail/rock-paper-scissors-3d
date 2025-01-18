@@ -8,18 +8,22 @@
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "server": "python app.py",
-    "crud": "python crud.py"
+    "crud": "python crud.py",
+    "login": "python login.py"
   },
   "dependencies": {
     "@react-three/drei": "^9.120.4",
     "@react-three/fiber": "^8.17.10",
     "axios": "^1.7.9",
     "dotenv": "^16.4.7",
+    "ethers": "^6.13.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^7.1.1",
     "rock-paper-scissors-3d": "file:",
     "three": "^0.153.0",
+    "web3": "^4.16.0",
+    "web3modal": "^1.9.12",
     "zustand": "^4.3.8"
   },
   "devDependencies": {
