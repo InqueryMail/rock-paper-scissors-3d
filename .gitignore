@@ -23,6 +23,8 @@ dist-ssr
 *.sln
 *.sw?
 
+uploads
+
 .env
 app.py
 crud.py
@@ -31,3 +33,4 @@ game_data.txt
 tst.py
 burn.py
 login.py
+pprof_crat.py
