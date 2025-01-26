@@ -30,8 +30,10 @@ export default function AdminComponent() {
 
     try {
       const response = await axios.put(
-        `http://localhost:5001/users/${walletAddress}`,
-        { username: newUsername }
+        `${BACKEND_URL_CRUD}/users/${walletAddress}`,
+        {
+          username: newUsername,
+        }
       );
       setMessage(response.data.message);
       fetchUsers();
@@ -44,7 +46,7 @@ export default function AdminComponent() {
   const handleDeleteUser = async (walletAddress) => {
     try {
       const response = await axios.delete(
-        `http://localhost:5001/users/${walletAddress}`
+        `${BACKEND_URL_CRUD}/users/${walletAddress}`
       );
       setMessage(response.data.message);
       fetchUsers();
