@@ -122,6 +122,12 @@ export default function InterfaceComponent() {
               </div>
             </div>
             <div className="modal-about-area"></div>
+            <button
+              onClick={() => (window.location.href = "/shop")}
+              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded mt-4"
+            >
+              Go to Shop
+            </button>
           </div>
         </div>
       )}

@@ -13,6 +13,7 @@ export default {
   server: {
     host: true,
     open: !isCodeSandbox, // Open if it's not a CodeSandbox
+    port: 3000,
   },
   build: {
     outDir: "../dist",

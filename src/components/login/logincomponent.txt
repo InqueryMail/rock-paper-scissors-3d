@@ -10,7 +10,7 @@ import {
   Package,
 } from "lucide-react";
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL; // Backend URL
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
 
 export default function LoginComponent() {
   const [walletAddress, setWalletAddress] = useState(
@@ -19,20 +19,14 @@ export default function LoginComponent() {
   const [userInfo, setUserInfo] = useState("");
   const [walletStatus, setWalletStatus] = useState("");
   const [errorStatus, setErrorStatus] = useState("");
-  const [showOptions, setShowOptions] = useState(false); // Default false
-  const [isConnected, setIsConnected] = useState(false); // Default false
+  const [showOptions, setShowOptions] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
   const [isMetaMaskConnected, setIsMetaMaskConnected] = useState(false);
   const [userName, setUserName] = useState("");
   const [profileImage, setProfileImage] = useState(null);
   const [profileImageURL, setProfileImageURL] = useState("");
   const [loading, setLoading] = useState(false);
   const [userExists, setUserExists] = useState(false);
-
-  // useEffect(() => {
-  //   if (walletAddress && isConnected) {
-  //     // setShowOptions(true); // Enable options only if user is logged in
-  //   }
-  // }, [walletAddress, isConnected]);
 
   useEffect(() => {
     async function checkConnection() {
@@ -46,7 +40,7 @@ export default function LoginComponent() {
             const address = accounts[0];
             setWalletAddress(address);
             localStorage.setItem("walletAddress", address);
-            await checkUserExists(address); // Check if user exists in backend
+            await checkUserExists(address);
             setIsConnected(true);
             setLoading(false);
           } else {
@@ -74,7 +68,7 @@ export default function LoginComponent() {
         setUserExists(true);
         setUserInfo(`Welcome back, ${data.username}!`);
         setProfileImageURL(data.profile_image);
-        setShowOptions(true); // Enable options for existing users
+        setShowOptions(true);
       } else {
         setUserExists(false);
       }
