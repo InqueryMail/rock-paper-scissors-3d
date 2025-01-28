@@ -3,6 +3,9 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Admin, Game, GameData, Login } from "./pages";
 import notFoundImage from "../public/assets/404.png";
 import BurnNFT from "./nft/BurnNFT";
+import Inventory from "./components/Inventory";
+import Leaderbord from "./components/Leaderbord";
+import Shop from "./components/Shop";
 
 const App = () => {
   return (
@@ -14,6 +17,9 @@ const App = () => {
         <Route path="/game-data/:walletAddress" element={<GameData />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/burn" element={<BurnNFT />} />
+        <Route path="/inventory" element={<Inventory />} />
+        <Route path="/leaderboard" element={<Leaderbord />} />
+        <Route path="/shop" element={<Shop />} />
       </Routes>
     </Router>
   );

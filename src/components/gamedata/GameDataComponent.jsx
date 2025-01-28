@@ -13,6 +13,8 @@ export default function GameDataComponent() {
     fetchGameData();
   }, []);
 
+  console.log(gameData);
+
   const fetchGameData = async () => {
     try {
       const response = await axios.get(
